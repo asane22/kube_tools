@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tomcat
+#  namespace: tomcat-namespace
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - tomcat.gainde2000.sn
+    secretName: ingress-certificat-gainde
+  rules:
+  - host: tomcat.gainde2000.sn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tomcat-external-name
+            port:
+              number: 80

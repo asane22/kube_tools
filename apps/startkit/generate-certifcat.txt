@@ -1,0 +1,6 @@
+kubectl create secret tls ingress-certificat-gainde  --key wildcard_gainde2000_sn_2023.key  --cert star_gainde2000_sn_Bundle.crt
+
+kubectl create secret tls ingress-certificat-gainde  --key wildcard_domaine_sn_2023.key  --cert star_domaine_sn_Bundle.crt -n tomcat-namespace
+ 
+ 
+kubectl create secret tls ingress-certificat-gainde --cert=/path/to/tls.crt --key=/path/to/tls.key -n default

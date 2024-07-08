@@ -1,0 +1,23 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: devops-project-front
+spec:
+  replicas: 2
+  #number of replicas generated
+  selector:
+    #assigns labels to the pods for future selection
+    matchLabels:
+      app:  devops-project-front
+      version: v01
+  template:
+    metadata:
+      labels:
+        app:  devops-project-front
+        version: v01
+    spec:
+      containers:
+      - name: devops-project-front
+        image: infras/devops:0.0.2-front-projetproduitdevops
+        ports:
+          - containerPort: 8484

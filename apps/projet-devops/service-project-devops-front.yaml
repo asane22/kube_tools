@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: service-devops-front
+spec:
+  selector:
+    app.kubernetes.io/name: devops-project-front
+  ports:
+    - protocol: TCP
+      port: 8484
+      targetPort: 9376

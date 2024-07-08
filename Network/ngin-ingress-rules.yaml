@@ -1,0 +1,88 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gainde2000
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+   # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    #nginx.ingress.kubernetes.io/affinity: "cookie"
+    #nginx.ingress.kubernetes.io/session-cookie-name: "route"
+    #nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.kubernetes.io/proxy-read-timeout: "1600"
+    # nginx.ingress.kubernetes.io/proxy-send-timeout: "1600"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/hsts: "true"
+    # nginx.ingress.kubernetes.io/hsts-max-age: "31536000"
+    # nginx.ingress.kubernetes.io/hsts-include-subdomains: "true"
+    # nginx.ingress.kubernetes.io/hsts-preload: "true"
+spec:
+  tls:
+  - hosts:
+    - sso.gainde2000.sn
+    - identityprovider.gainde2000.sn
+    - userprovider.gainde2000.sn
+    - orbuspartenaire-backend.gainde2000.sn
+    - orbuspartenaire.gainde2000.sn
+
+    secretName: ingress-certif-secret
+  rules:
+  - host: sso.gainde2000.sn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: front-sso-service-bridge
+            port:
+              number: 80
+
+  - host: userprovider.gainde2000.sn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: sso-user-provider-service-bridge
+            port:
+              number: 8087
+
+  - host: orbuspartenaire.gainde2000.sn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: orbus-partenaire-front-svc-bridge
+            port:
+              number: 80
+
+  - host: orbuspartenaire-backend.gainde2000.sn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: orbuspartenaire-backend-svc-bridge
+            port:
+              number: 8084
+
+  - host: identityprovider.gainde2000.sn
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: keycloak-kyc-service-bridge
+            port:
+              number: 8080
+
+

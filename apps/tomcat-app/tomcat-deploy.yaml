@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-app
+  namespace: tomcat-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tomcat-app
+  template:
+    metadata:
+      labels:
+        app: tomcat-app
+    spec:
+      containers:
+        - name: tomcat-app
+          #image: 192.168.2.159:5001/sso:0.1.11-g2k_sso_front
+          image: tomcat:9.0
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: tomcat-config
+              mountPath: /usr/local/tomcat/conf
+            - name: tomcat-data
+              mountPath: /usr/local/tomcat/webapps
+      volumes:
+        - name: tomcat-config
+          configMap:
+            name: tomcat-config
+        - name: tomcat-data
+          emptyDir: {}
+#      resources:
+#        requests:
+#          memory: "64Mi"
+#          cpu: "250m"
+#        limits:
+#          memory: "128Mi"
+#          cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tomcat-app
+  name: tomcat-service
+  namespace: tomcat-namespace
+spec:
+  type: NodePort
+  ports:
+    - name: tomcat-port
+      port: 80
+#      nodePort: 8080
+      targetPort: 8080
+  selector:
+    app: tomcat-app
+

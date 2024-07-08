@@ -1,0 +1,23 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: devops-project-api
+spec:
+  replicas: 2
+  #number of replicas generated
+  selector:
+    #assigns labels to the pods for future selection
+    matchLabels:
+      app:  devops-project-api
+      version: v01
+  template:
+    metadata:
+      labels:
+        app:  devops-project-api
+        version: v01
+    spec:
+      containers:
+      - name: devops-project-api
+        image: infras/devops:0.0.2-back-projetproduitdevops
+        ports:
+          - containerPort: 8080
